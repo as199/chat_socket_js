@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SOCKET.IO CHAT</title>
+</head>
+<body>
+<div id="messages"></div>
+<form action="">
+    <label for="msg">Votre Message</label>
+    <input type="text" id="msg" autocomplete="off">
+    <button>Send</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" ></script>
+<script>
+    $(function () {
+        const socket = io();
+
+        $("form").submit(function (e){
+            let msg =$("#msg");
+            e.preventDefault();
+            socket.emit("chat message",msg.val());
+            msg.val("");
+            return false;
+
+        });
+
+        socket.on("chat message",function (msg) {
+            console.log(msg);
+            $("#messages").append($("<p>").text(msg));
+        });
+
+    });
+</script>
+</body>
+</html>
